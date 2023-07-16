@@ -16,7 +16,7 @@ const HomeScreen = () => {
   const handleConfirm = async () => {
     try {
       const genreString = selectedGenres.join(',');      
-      const response = await axios.post('http://192.168.0.4:8080/selectGenre', {
+      const response = await axios.post('http://152.67.204.227:8080/selectGenre', {
         preferMovie: genreString,
         userID: '1',
       });
