@@ -7,7 +7,7 @@ const NewMovieScreen = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  const apiUrl = "http://192.168.0.4:8080/api/recentMovies";
+  const apiUrl = "http://152.67.204.227:8080/api/recentMovies";
 
   const fetchMovies = async () => {
     try {

@@ -59,12 +59,12 @@ const LoginScreen = ({ navigation }) => {
                 onValueChange={toggleSwitch}
               />
             </View>
-            <ToucwhableHighlight 
+            <TouchableHighlight 
               onPress={() => setLoginModal(true)}>
               <View style = {styles.btnContainer}>
                 <Text style={styles.textStyle}>Log In</Text>
               </View>
-            </ToucwhableHighlight>
+            </TouchableHighlight>
             <TouchableHighlight
               style={{marginTop: 15}}
               onPress={() => setSignInModal(true)}

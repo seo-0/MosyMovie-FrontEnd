@@ -9,7 +9,7 @@ const EventScreen = () => {
   const [error, setError] = useState(null);
   const [selectedItemId, setSelectedItemId] = useState(null);
   
-  const apiUrl = "http://192.168.0.4:8080/events"; // API URL을 변수에 저장
+  const apiUrl = "http://152.67.204.227:8080/events"; // API URL을 변수에 저장
 
   const fetchEvents = async () => {
   try {
