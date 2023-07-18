@@ -1,90 +1,87 @@
-import React, { Component, useState, useRef, useEffect } from 'react';
-import { View, KeyboardAvoidingView, TextInput, StyleSheet, Switch, Platform, TouchableWithoutFeedback, Text, Keyboard, Image, SafeAreaView, TouchableHighlight, Modal, TouchableOpacity } from 'react-native';
+import React, { useState } from 'react';
+import { View, TextInput, StyleSheet, Switch, Platform, TouchableWithoutFeedback, Text, Keyboard, Image, SafeAreaView, TouchableHighlight, Modal } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import AsyncStorage from '@react-native-community/async-storage';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import RegisterScreen from './RegisterScreen';
 
 const Stack = createStackNavigator();
 
 const LoginScreen = ({ navigation }) => {
-  const [isEnabled, setIsEnabled] = React.useState(false);
-  const [ID, setID] = React.useState('');
-  const [password, setPassword] = React.useState('');
-  const [signInModal, setSignInModal] = React.useState(false);
-  const [loginModal, setLoginModal] = React.useState(false);
+  const [isEnabled, setIsEnabled] = useState(false);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [signInModal, setSignInModal] = useState(false);
+  const [loginModal, setLoginModal] = useState(false);
 
   const toggleSwitch = () => setIsEnabled(previousState => !previousState);
 
-  const handleLogin = async () => {
-    // Add your login logic here
-    const storedUsername = await AsyncStorage.getItem('username');
+  const handleLogin = async () => { //로그인 로직
+    const storedUsername = await AsyncStorage.getItem('email');
     const storedPassword = await AsyncStorage.getItem('password');
 
     if (ID === storedUsername && password === storedPassword) {
       setLoginModal(true);
     } else {
-      setID('');
+      setEmail('');
       setPassword('');
       Alert.alert('Invalid credentials');
     }
   };
 
+  const handleRegister = async () => {
+    navigation.navigate('Register'); // 회원가입 페이지로 이동
+  };
+
   return (
-    
     <SafeAreaView style={styles.container}>
-      <KeyboardAvoidingView
-        behavior={Platform.OS === "ios" ? "padding" : "height"}
-        style={{...styles.container, paddingBottom: 15}}
-      >
-        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-          <View style={styles.inner}>
-            <View style={styles.imageView}>
-              <Image style={styles.image} source={{uri:'./free-icon-login-7856337.png'}}/>
-            </View>
-            <TextInput style={styles.textinput}
-              placeholder="Username"
-              onChangeText={text => setID(text)} value={ID}
-            />
-            <TextInput style={styles.textinput}
-              placeholder="Password"
-              onChangeText={text => setPassword(text)} value={password}
-            />
-            <View style={styles.switchView}>
-              <Text style={styles.switchText}>자동 로그인</Text>
-              <Switch
-                style={{marginLeft: 10}}
-                value={isEnabled}
-                trackColor={{true: 'blue'}}
-                onValueChange={toggleSwitch}
-              />
-            </View>
-            <TouchableHighlight 
-              onPress={() => setLoginModal(true)}>
-              <View style = {styles.btnContainer}>
-                <Text style={styles.textStyle}>Log In</Text>
-              </View>
-            </TouchableHighlight>
-            <TouchableHighlight
-              style={{marginTop: 15}}
-              onPress={() => setSignInModal(true)}
-            >
-              <View style = {styles.btnContainer}>
-                <Text style={styles.textStyle}>Sign In</Text>
-              </View>
-            </TouchableHighlight>
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        <View style={styles.inner}>
+          <View style={styles.imageView}>
+            <Image style={styles.image} source={{ uri: './free-icon-login-7856337.png' }} />
           </View>
-        </TouchableWithoutFeedback>
-      </KeyboardAvoidingView>
+          <TextInput
+            style={styles.textinput}
+            placeholder="Username"
+            onChangeText={text => setEmail(text)}
+            value={email}
+          />
+          <TextInput
+            style={styles.textinput}
+            placeholder="Password"
+            onChangeText={text => setPassword(text)}
+            value={password}
+          />
+          <View style={styles.switchView}>
+            <Text style={styles.switchText}>자동 로그인</Text>
+            <Switch
+              style={{ marginLeft: 10 }}
+              value={isEnabled}
+              trackColor={{ true: 'blue' }}
+              onValueChange={toggleSwitch}
+            />
+          </View>
+          <TouchableHighlight onPress={handleLogin}>
+            <View style={styles.btnContainer}>
+              <Text style={styles.textStyle}>Log In</Text>
+            </View>
+          </TouchableHighlight>
+          <TouchableHighlight style={{ marginTop: 15 }} onPress={handleRegister}>
+            <View style={styles.btnContainer}>
+              <Text style={styles.textStyle}>Sign In</Text>
+            </View>
+          </TouchableHighlight>
+        </View>
+      </TouchableWithoutFeedback>
       <Modal
-      animationType='slide'
-      transparent={true}
-      visible={signInModal}
-    >
-      <View style={styles.centeredView}>
-        <View style={styles.modalView}>
-          <Text style={styles.modalText}>준비중 입니다.</Text>
-          <TouchableHighlight
+        animationType='slide'
+        transparent={true}
+        visible={signInModal}
+      >
+        <View style={styles.centeredView}>
+          <View style={styles.modalView}>
+            <Text style={styles.modalText}>준비중 입니다.</Text>
+            <TouchableHighlight
               style={styles.openButton}
               onPress={() => {
                 setSignInModal(!signInModal);
@@ -92,10 +89,10 @@ const LoginScreen = ({ navigation }) => {
             >
               <Text style={styles.textStyle}>Close</Text>
             </TouchableHighlight>
+          </View>
         </View>
-      </View>
-    </Modal>
-    <Modal
+      </Modal>
+      <Modal
         animationType='slide'
         transparent={true}
         visible={loginModal}
@@ -104,23 +101,23 @@ const LoginScreen = ({ navigation }) => {
           <View style={styles.modalView}>
             <Text style={styles.modalText}>{ID === '' ? 'Error!' : `Welcome ${ID}!`}</Text>
             <TouchableHighlight
-                style={styles.openButton}
-                onPress={() => {
-                  setLoginModal(!loginModal);
-                }}
-              >
-                <Text style={styles.textStyle}>Close</Text>
-              </TouchableHighlight>
+              style={styles.openButton}
+              onPress={() => {
+                setLoginModal(!loginModal);
+              }}
+            >
+              <Text style={styles.textStyle}>Close</Text>
+            </TouchableHighlight>
           </View>
         </View>
       </Modal>
     </SafeAreaView>
-  )
-}
+  );
+};
 
 const styles = StyleSheet.create({
   container: {
-    flex:1
+    flex: 1
   },
   imageView: {
     alignItems: 'center'
@@ -130,13 +127,13 @@ const styles = StyleSheet.create({
     height: 100,
   },
   inner: {
-    padding:24,
-    flex:1
+    padding: 24,
+    flex: 1
   },
   textinput: {
     marginTop: 20,
     height: 40,
-    borderColor: "orange",
+    borderColor: 'orange',
     borderBottomWidth: 1,
     marginBottom: 10,
   },
@@ -153,9 +150,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderRadius: 10,
     backgroundColor: 'orange',
-    borderColor : 'black',
+    borderColor: 'black',
     borderWidth: 1
-    
+
   },
   textStyle: {
     fontSize: 20,
@@ -171,11 +168,11 @@ const styles = StyleSheet.create({
   },
   modalView: {
     margin: 20,
-    backgroundColor: "white",
+    backgroundColor: 'white',
     borderRadius: 20,
     padding: 35,
-    alignItems: "center",
-    shadowColor: "#000",
+    alignItems: 'center',
+    shadowColor: '#000',
     shadowOffset: {
       width: 0,
       height: 2
@@ -185,11 +182,11 @@ const styles = StyleSheet.create({
     elevation: 5
   },
   openButton: {
-    backgroundColor: "#F194FF",
+    backgroundColor: '#F194FF',
     borderRadius: 20,
     padding: 10,
     elevation: 2
   },
-})
+});
 
 export default LoginScreen;
