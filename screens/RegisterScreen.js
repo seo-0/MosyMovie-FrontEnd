@@ -10,9 +10,6 @@ const RegisterScreen = ({ navigation }) => {
 
   const handleRegister = async () => {
     try {
-      const email = await AsyncStorage.getItem('email');
-      const password = await AsyncStorage.getItem('password');
-
       const response = await axios.post('http://example.com/register', {
         email,
         username,
