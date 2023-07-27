@@ -4,7 +4,6 @@ import axios from 'axios';
 import { getFocusedRouteNameFromRoute, NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import MainScreen from './screens/MainScreen';
-import DetailScreen from './screens/DetailScreen';
 import RecommendScreen from './screens/RecommendScreen';
 import EventScreen from './screens/EventScreen';
 import NotificationScreen from './screens/NotificationScreen';
@@ -67,6 +66,11 @@ function App() {
           name="Login" // 로그인 페이지를 첫 화면으로 설정
           component={LoginScreen}
           options={{ headerShown: false }} // 로그인 페이지에 헤더 숨김
+        />
+         <Stack.Screen
+          name="SignUp" // 회원가입 페이지를 추가
+          component={SignUpScreen}
+          options={{ headerShown: false }} // 회원가입 페이지에 헤더 숨김
         />
         <Stack.Screen
           name="MosyMovie"
