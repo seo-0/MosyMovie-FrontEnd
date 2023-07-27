@@ -73,7 +73,12 @@ function MainScreen() {
       <Tab.Screen
         name="Profile"
         component={ProfileScreen}
-        options={{ title: '개인 정보' }}
+        options={{ 
+          title: '개인 정보',
+          tabBarIcon: ({color, size}) => 
+            <Icon name="profile" color={color} size={size} />,
+            tabBarColor: 'blue',
+        }}
       />
      </Tab.Navigator>
   );
