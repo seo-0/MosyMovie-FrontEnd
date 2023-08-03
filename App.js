@@ -10,6 +10,7 @@ import NotificationScreen from './screens/NotificationScreen';
 import NewmovieScreen from './screens/NewmovieScreen';
 import LoginScreen from './screens/LoginScreen'; // 추가된 코드
 import ProfileScreen from './screens/ProfileScreen'; // 추가된 코드
+import RegisterScreen from './screens/RegisterScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -69,7 +70,7 @@ function App() {
         />
          <Stack.Screen
           name="SignUp" // 회원가입 페이지를 추가
-          component={SignUpScreen}
+          component={RegisterScreen}
           options={{ headerShown: false }} // 회원가입 페이지에 헤더 숨김
         />
         <Stack.Screen
