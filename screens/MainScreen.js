@@ -8,6 +8,7 @@ import RecommendScreen from './RecommendScreen';
 import NotificationScreen from './NotificationScreen';
 import NewMovieScreen from './NewmovieScreen';
 import HomeScreen from './HomeScreen';
+import ProfileScreen from './ProfileScreen';
 
 const Tab = createMaterialBottomTabNavigator();
 
@@ -69,6 +70,16 @@ function MainScreen() {
              tabBarColor: 'blue',
          }}
        />
+      <Tab.Screen
+        name="Profile"
+        component={ProfileScreen}
+        options={{ 
+          title: '개인 정보',
+          tabBarIcon: ({color, size}) => 
+            <Icon name="profile" color={color} size={size} />,
+            tabBarColor: 'blue',
+        }}
+      />
      </Tab.Navigator>
   );
 }

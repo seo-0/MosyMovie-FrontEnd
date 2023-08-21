@@ -4,12 +4,13 @@ import axios from 'axios';
 import { getFocusedRouteNameFromRoute, NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import MainScreen from './screens/MainScreen';
-import DetailScreen from './screens/DetailScreen';
 import RecommendScreen from './screens/RecommendScreen';
 import EventScreen from './screens/EventScreen';
 import NotificationScreen from './screens/NotificationScreen';
 import NewmovieScreen from './screens/NewmovieScreen';
-import * as Notifications from 'expo-notifications';
+import LoginScreen from './screens/LoginScreen'; // 추가된 코드
+import ProfileScreen from './screens/ProfileScreen'; // 추가된 코드
+import RegisterScreen from './screens/RegisterScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -21,6 +22,8 @@ function getHeaderTitle(route) {
     Newmovie: '최신 개봉작',
     Recommendation: '영화 추천',
     Notifications: '푸쉬 알림',
+    Profile: '프로필',
+
   };
 
   return nameMap[routeName];
@@ -50,16 +53,26 @@ function App() {
     
   // Expo 알림 서비스에 핸들러 등록
   Notifications.setNotificationHandler({
-        handleNotification: async () => ({
-          shouldShowAlert: true,
-          shouldPlaySound: false,
-          shouldSetBadge: false,
-        }),
-      });
+    handleNotification: async () => ({
+      shouldShowAlert: true,
+      shouldPlaySound: false,
+      shouldSetBadge: false,
+    }),
+  });
 
   return (
     <NavigationContainer>
       <Stack.Navigator>
+        <Stack.Screen
+          name="Login" // 로그인 페이지를 첫 화면으로 설정
+          component={LoginScreen}
+          options={{ headerShown: false }} // 로그인 페이지에 헤더 숨김
+        />
+         <Stack.Screen
+          name="SignUp" // 회원가입 페이지를 추가
+          component={RegisterScreen}
+          options={{ headerShown: false }} // 회원가입 페이지에 헤더 숨김
+        />
         <Stack.Screen
           name="MosyMovie"
           component={MainScreen}
@@ -67,15 +80,19 @@ function App() {
             title: getHeaderTitle(route),
           })}
         />
-        <Stack.Screen name="Detail" component={DetailScreen} />
+        {/* <Stack.Screen name="Detail" component={DetailScreen} /> */}
         <Stack.Screen name="Event" component={EventScreen} />
         <Stack.Screen name="Newmovie" component={NewmovieScreen} />
         <Stack.Screen name="Recommendation" component={RecommendScreen} />
         <Stack.Screen name="Notification" component={NotificationScreen} />
+        <Stack.Screen
+          name="Profile"
+          component={ProfileScreen}
+          options={{ title: '개인 정보' }}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );
-
 }
 
 export default App;
