@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import { View, TextInput, StyleSheet, Switch, Platform, TouchableWithoutFeedback, Text, Keyboard, Image, SafeAreaView, TouchableHighlight, Modal } from 'react-native';
+import { View, TextInput, StyleSheet, Switch, Platform, TouchableWithoutFeedback, Text, Keyboard, Image, SafeAreaView, TouchableHighlight, Modal, Alert } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import axios from 'axios'; // 추가됨
 import RegisterScreen from './RegisterScreen';
 
 const Stack = createStackNavigator();
@@ -16,16 +17,34 @@ const LoginScreen = ({ navigation }) => {
 
   const toggleSwitch = () => setIsEnabled(previousState => !previousState);
 
-  const handleLogin = async () => { //로그인 로직
-    const storedUsername = await AsyncStorage.getItem('email');
-    const storedPassword = await AsyncStorage.getItem('password');
+  const handleLogin = async () => {
+    try {
+      // 1. 백엔드로 로그인 요청을 보냅니다.
+      const response = await axios.post('http://152.67.204.227:8080/login', {
+        email: email,
+        password: password,
+      });
 
-    if (ID === storedUsername && password === storedPassword) {
-      setLoginModal(true);
-    } else {
-      setEmail('');
-      setPassword('');
-      Alert.alert('Invalid credentials');
+      if (response.status === 200 && response.data) {
+        const { access_token, refresh_token } = response.data;
+
+        // 2. 받아온 토큰을 저장합니다.
+        await AsyncStorage.setItem('access_token', access_token);
+        await AsyncStorage.setItem('refresh_token', refresh_token);
+
+        // ... (성공 시, 다른 페이지로 리다이렉션 등의 추가 로직을 여기에 추가)
+        navigation.navigate('HomeScreen');  
+
+      } else {
+        // 로그인 실패 처리
+        setEmail('');
+        setPassword('');
+        Alert.alert('부적절한 로그인 시도입니다.');
+      }
+    } catch (error) {
+      // 에러 처리
+      console.error(error);
+      Alert.alert('로그인 도중 에러가 발생했습니다. 다시 시도하세요.');
     }
   };
 

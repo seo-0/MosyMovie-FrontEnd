@@ -15,7 +15,7 @@ const Tab = createMaterialBottomTabNavigator();
 function MainScreen() {
   return (
     <Tab.Navigator
-      initialRouteName="Home"
+      initialRouteName="LoginScreen"
       tabBarOptions={{
         showIcon: true,
       }}

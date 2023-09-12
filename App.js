@@ -68,6 +68,11 @@ function App() {
           component={LoginScreen}
           options={{ headerShown: false }} // 로그인 페이지에 헤더 숨김
         />
+        <Stack.Screen
+          name="HomeScreen"
+          component={HomeScreen}
+          options={{ headerShown: false }}
+        />
          <Stack.Screen
           name="SignUp" // 회원가입 페이지를 추가
           component={RegisterScreen}
