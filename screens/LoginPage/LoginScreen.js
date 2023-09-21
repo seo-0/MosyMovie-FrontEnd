@@ -4,7 +4,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios'; // 추가됨
-import RegisterScreen from './RegisterScreen';
+import MosyMovie from '../images/MosyMovie.jpg';
 
 const Stack = createStackNavigator();
 
@@ -34,6 +34,11 @@ const LoginScreen = ({ navigation }) => {
 
         // ... (성공 시, 다른 페이지로 리다이렉션 등의 추가 로직을 여기에 추가)
         navigation.navigate('HomeScreen');  
+        // 알림 권한 요청
+        const { status } = await Notifications.requestPermissionsAsync();
+        if (status !== 'granted') {
+          Alert.alert('권한 거부', '푸시 알림 권한이 거부되었습니다.');
+        }
 
       } else {
         // 로그인 실패 처리
@@ -49,7 +54,7 @@ const LoginScreen = ({ navigation }) => {
   };
 
   const handleRegister = async () => {
-    navigation.navigate('Register'); // 회원가입 페이지로 이동
+    navigation.navigate('RegisterScreen'); // 회원가입 페이지로 이동
   };
 
   return (
@@ -57,17 +62,17 @@ const LoginScreen = ({ navigation }) => {
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <View style={styles.inner}>
           <View style={styles.imageView}>
-            <Image style={styles.image} source={{ uri: './free-icon-login-7856337.png' }} />
+            <Image style={styles.image} source={{MosyMovie}} />
           </View>
           <TextInput
             style={styles.textinput}
-            placeholder="Username"
+            placeholder="사용자이름"
             onChangeText={text => setEmail(text)}
             value={email}
           />
           <TextInput
             style={styles.textinput}
-            placeholder="Password"
+            placeholder="비밀번호"
             onChangeText={text => setPassword(text)}
             value={password}
           />
@@ -118,7 +123,7 @@ const LoginScreen = ({ navigation }) => {
       >
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
-            <Text style={styles.modalText}>{ID === '' ? 'Error!' : `Welcome ${ID}!`}</Text>
+            <Text style={styles.modalText}>{email === '' ? 'Error!' : `Welcome ${email}!`}</Text>
             <TouchableHighlight
               style={styles.openButton}
               onPress={() => {

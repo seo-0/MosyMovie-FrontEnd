@@ -24,8 +24,7 @@ const HomeScreen = () => {
     } catch (error) {
       console.log('선호 장르 보내기 실패ㅠㅠ.. :', error);
     }
-    navigation.navigate('MosyMovie'); // 메인 화면으로 이동
-
+    navigation.navigate('HomeScreen'); // 메인 화면으로 이동
   };
 
  
