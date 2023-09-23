@@ -30,7 +30,7 @@ function App() {
     <NavigationContainer>
       <Stack.Navigator>
         <Stack.Screen
-          name="로그인"
+          name="LoginScreen"
           component={LoginScreen}
           options={{ headerShown: false }}
         />
@@ -40,7 +40,7 @@ function App() {
           options={{ headerShown: false }}
         />
         <Stack.Screen
-          name="회원가입"
+          name="RegisterScreen"
           component={RegisterScreen}
           options={{ headerShown: false }}
         />
