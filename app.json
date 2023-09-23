@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "LoginApp",
-    "slug": "LoginApp",
+    "name": "mosymovie",
+    "slug": "mosymovie",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",

@@ -1,11 +1,11 @@
 import React from 'react';
 import {createMaterialBottomTabNavigator} from '@react-navigation/material-bottom-tabs';
 import {Text, View, StyleSheet, Button} from 'react-native';
-import Icon from 'react-native-vector-icons/MaterialIcons';
+import { MaterialIcons } from '@expo/vector-icons';
+// import LoginScreen from './LoginPage/LoginScreen';
 
 import EventScreen from './EventScreen';
 import RecommendScreen from './RecommendScreen';
-import NotificationScreen from './NotificationScreen';
 import NewMovieScreen from './NewmovieScreen';
 import HomeScreen from './HomeScreen';
 import ProfileScreen from './ProfileScreen';
@@ -15,7 +15,7 @@ const Tab = createMaterialBottomTabNavigator();
 function MainScreen() {
   return (
     <Tab.Navigator
-      initialRouteName="Home"
+      initialRouteName="LoginScreen"
       tabBarOptions={{
         showIcon: true,
       }}
@@ -26,7 +26,7 @@ function MainScreen() {
       options={{
         title: '홈',
         tabBarIcon: ({color, size}) => 
-          <Icon name="home" color={color} size={size} />,
+        <MaterialIcons name="home" size={size} color={color} />,
           tabBarColor: 'black',
       }}
     />
@@ -36,7 +36,7 @@ function MainScreen() {
       options={{
         title: '이벤트',
         tabBarIcon: ({color, size}) =>
-          <Icon name="search" color={color} size={size} />,
+        <MaterialIcons name="search" size={size} color={color} />,
           tabBarColor: 'gray',
        }}
      />
@@ -46,7 +46,7 @@ function MainScreen() {
       options={{
         title: '최신 개봉작',
         tabBarIcon: ({color, size}) =>
-          <Icon name="star" color={color} size={size} />,
+        <MaterialIcons name="star" size={size} color={color} />,
           tabBarColor: 'black',
        }}
      />
@@ -56,28 +56,18 @@ function MainScreen() {
        options={{
          title: '추천',
          tabBarIcon: ({color, size}) => 
-            <Icon name="movie" color={color} size={size} />,
-            tabBarColor: 'green',
+         <MaterialIcons name="movie" size={size} color={color} />,
+         tabBarColor: 'green',
        }}
      />
-     <Tab.Screen
-         name="Notifications"
-         component={NotificationScreen}
-         options={{
-           title: '알림',
-           tabBarIcon: ({color, size}) => 
-             <Icon name="notifications" color={color} size={size} />,
-             tabBarColor: 'blue',
-         }}
-       />
       <Tab.Screen
         name="Profile"
         component={ProfileScreen}
         options={{ 
           title: '개인 정보',
           tabBarIcon: ({color, size}) => 
-            <Icon name="profile" color={color} size={size} />,
-            tabBarColor: 'blue',
+          <MaterialIcons name="profile" size={size} color={color} />,
+          tabBarColor: 'blue',
         }}
       />
      </Tab.Navigator>

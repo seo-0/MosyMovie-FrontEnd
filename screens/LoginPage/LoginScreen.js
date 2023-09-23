@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import { View, TextInput, StyleSheet, Switch, Platform, TouchableWithoutFeedback, Text, Keyboard, Image, SafeAreaView, TouchableHighlight, Modal } from 'react-native';
+import { View, TextInput, StyleSheet, Switch, Platform, TouchableWithoutFeedback, Text, Keyboard, Image, SafeAreaView, TouchableHighlight, Modal, Alert } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import RegisterScreen from './RegisterScreen';
+import axios from 'axios'; // 추가됨
+import MosyMovie from '../images/MosyMovie.jpg';
 
 const Stack = createStackNavigator();
 
@@ -16,39 +17,62 @@ const LoginScreen = ({ navigation }) => {
 
   const toggleSwitch = () => setIsEnabled(previousState => !previousState);
 
-  const handleLogin = async () => { //로그인 로직
-    const storedUsername = await AsyncStorage.getItem('email');
-    const storedPassword = await AsyncStorage.getItem('password');
+  const handleLogin = async () => {
+    try {
+      // 1. 백엔드로 로그인 요청을 보냅니다.
+      const response = await axios.post('http://152.67.204.227:8080/login', {
+        email: email,
+        password: password,
+      });
 
-    if (ID === storedUsername && password === storedPassword) {
-      setLoginModal(true);
-    } else {
-      setEmail('');
-      setPassword('');
-      Alert.alert('Invalid credentials');
+      if (response.status === 200 && response.data) {
+        const { access_token, refresh_token } = response.data;
+
+        // 2. 받아온 토큰을 저장합니다.
+        await AsyncStorage.setItem('access_token', access_token);
+        await AsyncStorage.setItem('refresh_token', refresh_token);
+
+        // ... (성공 시, 다른 페이지로 리다이렉션 등의 추가 로직을 여기에 추가)
+        navigation.navigate('HomeScreen');  
+        // 알림 권한 요청
+        const { status } = await Notifications.requestPermissionsAsync();
+        if (status !== 'granted') {
+          Alert.alert('권한 거부', '푸시 알림 권한이 거부되었습니다.');
+        }
+
+      } else {
+        // 로그인 실패 처리
+        setEmail('');
+        setPassword('');
+        Alert.alert('부적절한 로그인 시도입니다.');
+      }
+    } catch (error) {
+      // 에러 처리
+      console.error(error);
+      Alert.alert('로그인 도중 에러가 발생했습니다. 다시 시도하세요.');
     }
   };
 
   const handleRegister = async () => {
-    navigation.navigate('Register'); // 회원가입 페이지로 이동
+    navigation.navigate('RegisterScreen'); // 회원가입 페이지로 이동
   };
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={styles.container}> 
+    <View style={styles.Text}>
+      <Text style={styles.TextStyle}>MosyMovie</Text>
+    </View>
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <View style={styles.inner}>
-          <View style={styles.imageView}>
-            <Image style={styles.image} source={{ uri: './free-icon-login-7856337.png' }} />
-          </View>
           <TextInput
             style={styles.textinput}
-            placeholder="Username"
+            placeholder="이메일"
             onChangeText={text => setEmail(text)}
             value={email}
           />
           <TextInput
             style={styles.textinput}
-            placeholder="Password"
+            placeholder="비밀번호"
             onChangeText={text => setPassword(text)}
             value={password}
           />
@@ -99,7 +123,7 @@ const LoginScreen = ({ navigation }) => {
       >
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
-            <Text style={styles.modalText}>{ID === '' ? 'Error!' : `Welcome ${ID}!`}</Text>
+            <Text style={styles.modalText}>{email === '' ? 'Error!' : `Welcome ${email}!`}</Text>
             <TouchableHighlight
               style={styles.openButton}
               onPress={() => {
@@ -119,21 +143,28 @@ const styles = StyleSheet.create({
   container: {
     flex: 1
   },
-  imageView: {
-    alignItems: 'center'
+  Text: {
+    margin: 20,
+    borderRadius: 8,
+    // View 컴포넌트의 스타일 설정
+    backgroundColor: 'olive', // 배경 색상
+    padding: 20, // 내부 여백
   },
-  image: {
-    width: 100,
-    height: 100,
+  TextStyle: {
+    textAlign: 'center',
+    // Text 컴포넌트의 스타일 설정
+    color: 'navy', // 텍스트 색상
+    fontSize: 60, // 폰트 크기
+    fontWeight: 'bold', // 폰트 굵기
   },
   inner: {
-    padding: 24,
+    padding: 30,
     flex: 1
   },
   textinput: {
     marginTop: 20,
     height: 40,
-    borderColor: 'orange',
+    borderColor: 'blue',
     borderBottomWidth: 1,
     marginBottom: 10,
   },
@@ -149,14 +180,13 @@ const styles = StyleSheet.create({
     padding: 15,
     alignItems: 'center',
     borderRadius: 10,
-    backgroundColor: 'orange',
+    backgroundColor: 'navy',
     borderColor: 'black',
     borderWidth: 1
-
   },
   textStyle: {
     fontSize: 20,
-    color: 'white',
+    color: 'olive',
     fontWeight: 'bold',
     textAlign: 'center',
   },
