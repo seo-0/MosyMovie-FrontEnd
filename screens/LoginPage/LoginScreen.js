@@ -58,15 +58,15 @@ const LoginScreen = ({ navigation }) => {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={styles.container}> 
+    <View style={styles.Text}>
+      <Text style={styles.TextStyle}>MosyMovie</Text>
+    </View>
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <View style={styles.inner}>
-          <View style={styles.imageView}>
-            <Image style={styles.image} source={{MosyMovie}} />
-          </View>
           <TextInput
             style={styles.textinput}
-            placeholder="사용자이름"
+            placeholder="이메일"
             onChangeText={text => setEmail(text)}
             value={email}
           />
@@ -143,21 +143,28 @@ const styles = StyleSheet.create({
   container: {
     flex: 1
   },
-  imageView: {
-    alignItems: 'center'
+  Text: {
+    margin: 20,
+    borderRadius: 8,
+    // View 컴포넌트의 스타일 설정
+    backgroundColor: 'olive', // 배경 색상
+    padding: 20, // 내부 여백
   },
-  image: {
-    width: 100,
-    height: 100,
+  TextStyle: {
+    textAlign: 'center',
+    // Text 컴포넌트의 스타일 설정
+    color: 'navy', // 텍스트 색상
+    fontSize: 60, // 폰트 크기
+    fontWeight: 'bold', // 폰트 굵기
   },
   inner: {
-    padding: 24,
+    padding: 30,
     flex: 1
   },
   textinput: {
     marginTop: 20,
     height: 40,
-    borderColor: 'orange',
+    borderColor: 'blue',
     borderBottomWidth: 1,
     marginBottom: 10,
   },
@@ -173,14 +180,13 @@ const styles = StyleSheet.create({
     padding: 15,
     alignItems: 'center',
     borderRadius: 10,
-    backgroundColor: 'orange',
+    backgroundColor: 'navy',
     borderColor: 'black',
     borderWidth: 1
-
   },
   textStyle: {
     fontSize: 20,
-    color: 'white',
+    color: 'olive',
     fontWeight: 'bold',
     textAlign: 'center',
   },
