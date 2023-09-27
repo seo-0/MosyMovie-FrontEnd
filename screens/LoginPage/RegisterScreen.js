@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
-import { View, TextInput, StyleSheet, Switch, Text, Image, SafeAreaView, Modal, Alert, TouchableOpacity } from 'react-native';
+import { View, TextInput, StyleSheet, Text, SafeAreaView, Modal, Alert, TouchableOpacity } from 'react-native';
 import axios from 'axios';
-import MosyMovie from '../images/MosyMovie.jpg';
 
 const RegisterScreen = ({ navigation }) => {
   const [emailId, setEmailId] = useState('');
@@ -50,7 +49,7 @@ const RegisterScreen = ({ navigation }) => {
         emailId,
         code: verificationCode,
       });
-      if (response.data.success) { // 백엔드에서 응답의 success 필드를 통해 인증 성공 여부를 확인
+      if (response.data) { // 백엔드에서 응답의 success 필드를 통해 인증 성공 여부를 확인
         setEmailVerified(true);
         Alert.alert("인증 성공!", "이메일 인증이 완료되었습니다.");
       } else {
@@ -77,30 +76,29 @@ const RegisterScreen = ({ navigation }) => {
         onChangeText={text => setEmailId(text)}
         value={emailId}
       />
-      {!isEmailVerified && (
-        <View>
-          <TouchableOpacity
-            title="이메일 인증하기"
-            onPress={handleEmailVerification}
-            style={styles.emailVerificationButton} // 새로운 스타일 속성 추가
-          >
-            <Text style={styles.buttonText}>이메일 인증하기</Text>
-          </TouchableOpacity>
-          <TextInput
-            style={styles.textinput}
-            placeholder="인증 코드 입력"
-            onChangeText={text => setVerificationCode(text)}
-            value={verificationCode}
-          />
-          <TouchableOpacity
-            title="코드 인증"
-            onPress={handleVerifyCode}
-            style={styles.codeVerificationButton} // 새로운 스타일 속성 추가
-          >
-            <Text style={styles.buttonText}>코드 인증</Text>
-          </TouchableOpacity>
-        </View>
-      )}
+      <TouchableOpacity
+        title="이메일 인증하기"
+        onPress={handleEmailVerification}
+        style={styles.emailVerificationButton} // 새로운 스타일 속성 추가
+      >
+        <Text style={styles.buttonText}>이메일 인증하기</Text>
+      </TouchableOpacity>
+      <TextInput
+        style={[
+          styles.textinput,
+          !isEmailVerified && styles.hiddenInput // 새로운 스타일 속성 추가
+        ]}
+        placeholder="인증 코드 입력"
+        onChangeText={text => setVerificationCode(text)}
+        value={verificationCode}
+      />
+      <TouchableOpacity
+        title="코드 인증"
+        onPress={handleVerifyCode}
+        style={styles.codeVerificationButton} // 새로운 스타일 속성 추가
+      >
+        <Text style={styles.buttonText}>코드 인증</Text>
+      </TouchableOpacity>
       <TextInput
         style={styles.textinput}
         placeholder="사용자이름"
@@ -238,6 +236,9 @@ const styles = StyleSheet.create({
   modalText: {
     marginBottom: 15,
     textAlign: 'center',
+  },
+  hiddenInput: {
+    // display: 'none', // 숨김 처리
   },
 });
 
