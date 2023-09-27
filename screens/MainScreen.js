@@ -2,7 +2,6 @@ import React from 'react';
 import {createMaterialBottomTabNavigator} from '@react-navigation/material-bottom-tabs';
 import {Text, View, StyleSheet, Button} from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
-// import LoginScreen from './LoginPage/LoginScreen';
 
 import EventScreen from './EventScreen';
 import RecommendScreen from './RecommendScreen';
@@ -73,7 +72,5 @@ function MainScreen() {
      </Tab.Navigator>
   );
 }
-
-
 
 export default MainScreen;
